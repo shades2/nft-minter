@@ -1,0 +1,1 @@
+# HSuite - NFT Minter
