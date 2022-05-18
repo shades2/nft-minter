@@ -27,7 +27,7 @@ export class NftHelper {
   constructor() {
     this.nftClient = new NFTStorage({ token: this.nftStorageToken });
     
-    if (this.environment == 'development') {
+    if (this.environment == 'testnet') {
       this.client = Client.forTestnet();
     } else {
       this.client = Client.forMainnet();
