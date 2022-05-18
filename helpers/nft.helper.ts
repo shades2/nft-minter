@@ -39,8 +39,12 @@ export class NftHelper {
 
   mintNfts() {
     nfts.forEach(async(nft) => {
-      let nftToken = await this.generateNft(nft);
-      console.log(nftToken);
+      try {
+        let nftToken: any = await this.generateNft(nft);
+        console.log(`minted token ${nftToken.serials[0].toString()}`);        
+      } catch(error: any) {
+        console.error(`error while minting: ${error.message}`);
+      }
     });
   }
 
@@ -84,7 +88,7 @@ export class NftHelper {
           nft.description,
           nft.creator,
           bufferImage,
-          `dragon.jpeg`,
+          `image.jpeg`,
           'image/jpeg',
           nft.properties
         );

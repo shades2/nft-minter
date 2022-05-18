@@ -1,12 +1,22 @@
 [
   {
-    "name": "just a test",
-    "description": "this tool is cool",
+    "name": "First NFT",
+    "description": "the very first one",
     "creator": "HSuite",
-    "image": "./images/logo.jpeg",
+    "image": "./images/logo_1.jpeg",
     "properties": {
       "power": 10,
       "skill": "killer"
+    }
+  },
+  {
+    "name": "Second NFT",
+    "description": "the very second one",
+    "creator": "HSuite",
+    "image": "./images/logo_2.jpeg",
+    "properties": {
+      "power": 5,
+      "skill": "hunter"
     }
   }
 ]
