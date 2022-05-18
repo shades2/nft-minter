@@ -1,0 +1,12 @@
+[
+  {
+    "name": "just a test",
+    "description": "this tool is cool",
+    "creator": "HSuite",
+    "image": "./images/logo.jpeg",
+    "properties": {
+      "power": 10,
+      "skill": "killer"
+    }
+  }
+]

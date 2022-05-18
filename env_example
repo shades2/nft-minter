@@ -1,0 +1,5 @@
+NFT_STORAGE_KEY=your_nftstoragekey_here
+OPERATOR_ACCOUNT_ID=your_operator_here
+OPERATOR_PRIVATE_KEY=your_private_key_here
+NFT_TOKEN_ID=your_nftokenid_here
+NFT_SUPPLY_KEY=your_nftsupplykey_here
