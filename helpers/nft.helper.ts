@@ -10,8 +10,8 @@ export class NftHelper {
   // and paste your private key here...
   private nftStorageToken: string = <string>process.env.NFT_STORAGE_KEY;
   
-  // TESTING
-  private environment = 'development';
+  // This shall be development OR production
+  private environment = process.env.ENVIRONMENT;
   private operator = {
     accountId: <string>process.env.OPERATOR_ACCOUNT_ID,
     privateKey: <string>process.env.OPERATOR_PRIVATE_KEY
@@ -20,17 +20,6 @@ export class NftHelper {
     token: <string>process.env.NFT_TOKEN_ID,
     supplyKey: <string>process.env.NFT_SUPPLY_KEY
   };
-
-  // PRODUCTION
-  // private environment = 'production';
-  // private operator = {
-  //   accountId: 'YOUR_PROD_OPERATOR_ID',
-  //   privateKey: 'YOUR_PROD_OPERATOR_PRIVATE_KEY'
-  // }
-  // private nft = {
-  //   token: 'YOU_NFT_TOKEN_ID',
-  //   supplyKey: 'YOUR_NFT_TOKEN_SUPPLY_KEY',
-  // }
 
   private nftClient: NFTStorage;
   private client: Client;
