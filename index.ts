@@ -2,11 +2,11 @@ import {NftHelper} from './helpers/nft.helper';
 
 async function main() {
   let nftHelper = new NftHelper();
-  nftHelper.mintNfts();
+  await nftHelper.mintNfts();
 }
 
-try {
-  main();
-} catch(error) {
-  console.error(error);
-}
+main().then(() => {
+  console.log("NFT Collection has been minted successfully!");
+}).catch(error => {
+  console.error(error.message);
+});

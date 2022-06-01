@@ -37,14 +37,19 @@ export class NftHelper {
     this.client.setOperator(this.operator.accountId, this.operator.privateKey);
   }
 
-  mintNfts() {
-    nfts.forEach(async(nft) => {
-      try {
-        let nftToken: any = await this.generateNft(nft);
-        console.log(`minted token ${nftToken.serials[0].toString()}`);        
-      } catch(error: any) {
-        console.error(`error while minting: ${error.message}`);
-      }
+  async mintNfts() {
+    return new Promise(async(resolve, reject) => {
+      for( let i = 0; i < nfts.length; i++) {
+        let nft = nfts[i];
+  
+        try {
+          let nftToken: any = await this.generateNft(nft);
+          console.log(`minted token ${nftToken.serials[0].toString()}`);      
+        } catch(error: any) {
+          reject(new Error(`error while minting NFT number ${i} - ${nft.name}: ${error.message}`));
+          break;
+        }
+      };
     });
   }
 
