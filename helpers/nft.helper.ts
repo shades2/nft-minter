@@ -1,5 +1,5 @@
 import { NFTStorage, File } from 'nft.storage';
-import { Client, NftId, PrivateKey, TokenId, TokenMintTransaction, TokenNftInfo, TokenNftInfoQuery, TransactionReceipt } from '@hashgraph/sdk';
+import { AccountId, Client, NftId, PrivateKey, TokenId, TokenMintTransaction, TokenNftInfo, TokenNftInfoQuery, TransactionReceipt } from '@hashgraph/sdk';
 import { StorageHelper } from './storage.helper';
 import { fileTypeFromBuffer } from 'file-type';
 import nfts from '../nft.json';
@@ -26,12 +26,20 @@ export class NftHelper {
 
   constructor() {
     this.nftClient = new NFTStorage({ token: this.nftStorageToken });
-    
-    if (this.environment == 'testnet') {
-      this.client = Client.forTestnet();
-    } else {
-      this.client = Client.forMainnet();
-      this.client.setMirrorNetwork("mainnet-public.mirrornode.hedera.com:443");
+
+    switch(this.environment) {
+      case 'mainnet':
+        this.client = Client.forMainnet();
+        this.client.setMirrorNetwork("mainnet-public.mirrornode.hedera.com:443");
+        break;      
+      case 'testnet':
+        this.client = Client.forTestnet();
+        break;
+      case 'custom':
+      default:
+        const node = {[<string>process.env.CUSTOM_NODE]: new AccountId(Number(process.env.CUSTOM_ACCOUNT_ID))};
+        this.client = Client.forNetwork(node).setMirrorNetwork(<string>process.env.CUSTOM_MIRROR);
+        break;
     }
 
     this.client.setOperator(this.operator.accountId, this.operator.privateKey);
