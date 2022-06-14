@@ -3,6 +3,9 @@ import { AccountId, Client, NftId, PrivateKey, TokenId, TokenMintTransaction, To
 import { StorageHelper } from './storage.helper';
 import { fileTypeFromBuffer } from 'file-type';
 import nfts from '../nft.json';
+import axios from 'axios';
+import lodash from 'lodash';
+
 require('dotenv').config();
 
 export class NftHelper {
@@ -45,11 +48,50 @@ export class NftHelper {
     this.client.setOperator(this.operator.accountId, this.operator.privateKey);
   }
 
+  async verifyNfts() {
+    return new Promise(async(resolve, reject) => {
+      let divergents = [];
+
+      for( let i = 0; i < nfts.length; i++) {
+        let nft = nfts[i];
+
+        const nftInfos = await new TokenNftInfoQuery()
+        .setNftId(new NftId(TokenId.fromString(this.nft.token), i + 1))
+        .execute(this.client);
+
+        let metadata = Buffer.from(<any>nftInfos[0].metadata, 'base64').toString('ascii').replace('ipfs://', '');
+        let content = await axios.get(`https://ipfs.io/ipfs/${metadata}`);
+
+        // merging images field, cause they will always diverge...
+        content.data.image = nft.image;
+
+        if(!lodash.isEqual(content.data, nft)) {
+          const diff = lodash.fromPairs(lodash.differenceWith(
+            lodash.toPairs(content.data), 
+            lodash.toPairs(nft), 
+            lodash.isEqual)
+          );
+
+          divergents.push({
+            serialNumber: nftInfos[0].nftId.serial.toString(),
+            diff: diff
+          });
+        }
+      }
+
+      if(divergents.length) {
+        reject(divergents);
+      } else {
+        resolve(true);
+      }
+    });
+  }
+
   async mintNfts() {
     return new Promise(async(resolve, reject) => {
       for( let i = 0; i < nfts.length; i++) {
         let nft = nfts[i];
-  
+
         try {
           let nftToken: any = await this.generateNft(nft);
           console.log(`minted token ${nftToken.serials[0].toString()}`);      
@@ -57,7 +99,9 @@ export class NftHelper {
           reject(new Error(`error while minting NFT number ${i} - ${nft.name}: ${error.message}`));
           break;
         }
-      };
+      }
+
+      resolve(true);
     });
   }
 

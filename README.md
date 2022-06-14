@@ -58,12 +58,13 @@ The format should be like this example:
 ## Minting
 To mint your collection, be sure your operator has got enough HBAR to mint them all, then simply run:
 ```bash
-$ npm run start
+$ [npm | yarn] run mint
 ```
-Or if you're using yarn:
+After minting, you can also double check that every single NFT matches the content of the json file, by running:
 ```bash
-$ yarn run start
+$ [npm | yarn] run verify
 ```
+This command will output the differences, if any, for a given NFT serial number.
 
 Once minted, you can check your collection out using [Zion NFT Explorer](zionft.com)
 

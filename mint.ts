@@ -2,7 +2,7 @@ import {NftHelper} from './helpers/nft.helper';
 
 async function main() {
   let nftHelper = new NftHelper();
-  await nftHelper.mintNfts();
+  return await nftHelper.mintNfts();
 }
 
 main().then(() => {
